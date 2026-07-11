@@ -61,7 +61,7 @@ public class MainActivity extends Activity {
     private LinearLayout page;
     private TextView quoteView;
     private TextView statusView;
-    private String currentPage = "姒傝";
+    private String currentPage = "\u6982\u89C8";
     private final Handler handler = new Handler();
     private final ArrayList<String> quotes = new ArrayList<>();
     private int quoteIndex = 0;
@@ -85,7 +85,7 @@ public class MainActivity extends Activity {
         loadQuotes();
         Collections.shuffle(quotes);
         buildLayout();
-        showPage("姒傝");
+        showPage("\u6982\u89C8");
         handler.post(quoteRunner);
     }
 
@@ -101,7 +101,7 @@ public class MainActivity extends Activity {
         LinearLayout header = vertical();
         header.setPadding(dp(18), dp(14), dp(18), dp(12));
         header.setBackgroundColor(DARK);
-        TextView title = text("瀹㈡埛璁㈠崟绠＄悊鍣?1.0", 22, Color.WHITE, true);
+        TextView title = text("\u5BA2\u6237\u8BA2\u5355\u7BA1\u7406\u5668 1.0", 22, Color.WHITE, true);
         header.addView(title);
         quoteView = text("", 12, Color.rgb(190, 222, 210), false);
         quoteView.setPadding(0, dp(4), 0, 0);
@@ -109,9 +109,9 @@ public class MainActivity extends Activity {
         header.addView(quoteView);
         LinearLayout headerActions = horizontal();
         headerActions.setPadding(0, dp(10), 0, 0);
-        headerActions.addView(actionButton("瀵煎嚭琛ㄦ牸", DARK, new Runnable() { @Override public void run() { exportXlsx(); } }));
-        headerActions.addView(actionButton("澶囦唤", DARK, new Runnable() { @Override public void run() { exportBackup(); } }));
-        headerActions.addView(actionButton("瀵煎叆", DARK, new Runnable() { @Override public void run() { importBackup(); } }));
+        headerActions.addView(actionButton("\u5BFC\u51FA\u8868\u683C", DARK, new Runnable() { @Override public void run() { exportXlsx(); } }));
+        headerActions.addView(actionButton("\u5907\u4EFD", DARK, new Runnable() { @Override public void run() { exportBackup(); } }));
+        headerActions.addView(actionButton("\u5BFC\u5165", DARK, new Runnable() { @Override public void run() { importBackup(); } }));
         header.addView(headerActions);
         root.addView(header);
 
@@ -119,7 +119,7 @@ public class MainActivity extends Activity {
         navScroll.setHorizontalScrollBarEnabled(false);
         LinearLayout nav = horizontal();
         nav.setPadding(dp(12), dp(10), dp(12), dp(8));
-        for (final String name : Arrays.asList("姒傝", "瀹㈡埛", "璁㈠崟", "鏀舵", "鎼滅储")) {
+        for (final String name : Arrays.asList("\u6982\u89C8", "\u5BA2\u6237", "\u8BA2\u5355", "\u6536\u6B3E", "\u641C\u7D22")) {
             Button tab = actionButton(name, BG, new Runnable() { @Override public void run() { showPage(name); } });
             tab.setTextColor(GREEN);
             tab.setTextSize(15);
@@ -139,7 +139,7 @@ public class MainActivity extends Activity {
         scroll.addView(page);
         root.addView(scroll, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0, 1));
 
-        statusView = text("鍑嗗灏辩华", 12, Color.rgb(52, 99, 86), false);
+        statusView = text("\u51C6\u5907\u5C31\u7EEA", 12, Color.rgb(52, 99, 86), false);
         statusView.setPadding(dp(18), dp(8), dp(18), dp(8));
         statusView.setBackgroundColor(Color.rgb(231, 242, 237));
         root.addView(statusView);
@@ -149,11 +149,11 @@ public class MainActivity extends Activity {
     private void showPage(String name) {
         currentPage = name;
         page.removeAllViews();
-        if ("姒傝".equals(name)) showDashboard();
-        if ("瀹㈡埛".equals(name)) showClients();
-        if ("璁㈠崟".equals(name)) showOrders();
-        if ("鏀舵".equals(name)) showPayments();
-        if ("鎼滅储".equals(name)) showSearch();
+        if ("\u6982\u89C8".equals(name)) showDashboard();
+        if ("\u5BA2\u6237".equals(name)) showClients();
+        if ("\u8BA2\u5355".equals(name)) showOrders();
+        if ("\u6536\u6B3E".equals(name)) showPayments();
+        if ("\u641C\u7D22".equals(name)) showSearch();
         // Rebuild the small navigation strip to reflect its selected state.
         buildLayoutPreservingPage(name);
     }
@@ -161,11 +161,11 @@ public class MainActivity extends Activity {
     private void buildLayoutPreservingPage(String name) {
         // The page contents are already generated; selected navigation is not essential to functionality.
         // A small status cue is more useful on narrow screens.
-        status("宸叉墦寮€锛? + name);
+        status("\u5DF2\u6253\u5F00\uFF1A" + name);
     }
 
     private void showDashboard() {
-        TextView live = text("鈼? 浠婂ぉ涔熷湪绋崇ǔ鎺ㄨ繘浣犵殑鐢熸剰", 15, Color.rgb(180, 245, 218), true);
+        TextView live = text("\u25CF  \u4ECA\u5929\u4E5F\u5728\u7A33\u7A33\u63A8\u8FDB\u4F60\u7684\u751F\u610F", 15, Color.rgb(180, 245, 218), true);
         live.setPadding(dp(15), dp(14), dp(15), dp(14));
         live.setBackground(round(DARK, dp(14)));
         page.addView(live, fullMargins(0, 0, 0, 10));
@@ -173,66 +173,66 @@ public class MainActivity extends Activity {
         for (JSONObject o : objects(orders)) total += o.optDouble("amount", 0);
         for (JSONObject p : objects(payments)) paid += p.optDouble("amount", 0);
         LinearLayout first = horizontal();
-        first.addView(metric("瀹㈡埛鎬绘暟", String.valueOf(clients.length()), Color.rgb(28, 48, 42)), weighted());
-        first.addView(metric("璁㈠崟鎬婚", money(total), Color.rgb(28, 48, 42)), weighted());
+        first.addView(metric("\u5BA2\u6237\u603B\u6570", String.valueOf(clients.length()), Color.rgb(28, 48, 42)), weighted());
+        first.addView(metric("\u8BA2\u5355\u603B\u989D", money(total), Color.rgb(28, 48, 42)), weighted());
         page.addView(first);
         LinearLayout second = horizontal();
         second.setPadding(0, dp(8), 0, 0);
-        second.addView(metric("宸叉敹娆?, money(paid), GREEN), weighted());
-        second.addView(metric("寰呮敹娆?, money(Math.max(0, total - paid)), Color.rgb(195, 122, 19)), weighted());
+        second.addView(metric("\u5DF2\u6536\u6B3E", money(paid), GREEN), weighted());
+        second.addView(metric("\u5F85\u6536\u6B3E", money(Math.max(0, total - paid)), Color.rgb(195, 122, 19)), weighted());
         page.addView(second, fullMargins(0, 0, 0, 12));
-        LinearLayout body = section("寰呮敹娆捐鍗?, "+ 鏂板缓璁㈠崟", new Runnable() { @Override public void run() { showOrderDialog(null); } });
+        LinearLayout body = section("\u5F85\u6536\u6B3E\u8BA2\u5355", "+ \u65B0\u5EFA\u8BA2\u5355", new Runnable() { @Override public void run() { showOrderDialog(null); } });
         int count = 0;
         for (final JSONObject o : objects(orders)) {
             if (o.optDouble("paid", 0) < o.optDouble("amount", 0)) {
                 JSONObject c = find(clients, o.optString("clientId"));
-                addRow(body, o.optString("title"), (c == null ? "鈥? : c.optString("name")) + " 路 寰呮敹 " + money(o.optDouble("amount") - o.optDouble("paid")), new Runnable() { @Override public void run() { showOrderDialog(o); } });
+                addRow(body, o.optString("title"), (c == null ? "\u2014" : c.optString("name")) + " \u00B7 \u5F85\u6536 " + money(o.optDouble("amount") - o.optDouble("paid")), new Runnable() { @Override public void run() { showOrderDialog(o); } });
                 count++;
             }
         }
-        if (count == 0) empty(body, "鏆傛棤寰呮敹娆捐鍗曘€?);
+        if (count == 0) empty(body, "\u6682\u65E0\u5F85\u6536\u6B3E\u8BA2\u5355\u3002");
     }
 
     private void showClients() {
-        LinearLayout body = section("瀹㈡埛妗ｆ", "+ 鏂板瀹㈡埛", new Runnable() { @Override public void run() { showClientDialog(null); } });
-        if (clients.length() == 0) { empty(body, "杩樻病鏈夊鎴凤紝鐐瑰嚮鍙充笂瑙掓柊澧炪€?"); return; }
+        LinearLayout body = section("\u5BA2\u6237\u6863\u6848", "+ \u65B0\u589E\u5BA2\u6237", new Runnable() { @Override public void run() { showClientDialog(null); } });
+        if (clients.length() == 0) { empty(body, "\u8FD8\u6CA1\u6709\u5BA2\u6237\uFF0C\u70B9\u51FB\u53F3\u4E0A\u89D2\u65B0\u589E\u3002 "); return; }
         for (final JSONObject c : objects(clients)) {
             int count = 0;
             for (JSONObject o : objects(orders)) if (c.optString("id").equals(o.optString("clientId"))) count++;
-            addRow(body, c.optString("name"), (c.optString("phone", "鈥?)) + " 路 " + c.optString("status", "寰呰窡杩?) + " 路 " + count + " 绗旇鍗?, new Runnable() { @Override public void run() { showClientDialog(c); } });
+            addRow(body, c.optString("name"), (c.optString("phone", "\u2014")) + " \u00B7 " + c.optString("status", "\u5F85\u8DDF\u8FDB") + " \u00B7 " + count + " \u7B14\u8BA2\u5355", new Runnable() { @Override public void run() { showClientDialog(c); } });
         }
     }
 
     private void showOrders() {
-        LinearLayout body = section("鍏ㄩ儴璁㈠崟", "+ 鏂板缓璁㈠崟", new Runnable() { @Override public void run() { showOrderDialog(null); } });
-        if (orders.length() == 0) { empty(body, "杩樻病鏈夎鍗曪紝鍏堟柊澧炵涓€绗斻€?"); return; }
+        LinearLayout body = section("\u5168\u90E8\u8BA2\u5355", "+ \u65B0\u5EFA\u8BA2\u5355", new Runnable() { @Override public void run() { showOrderDialog(null); } });
+        if (orders.length() == 0) { empty(body, "\u8FD8\u6CA1\u6709\u8BA2\u5355\uFF0C\u5148\u65B0\u589E\u7B2C\u4E00\u7B14\u3002 "); return; }
         for (final JSONObject o : objects(orders)) {
             JSONObject c = find(clients, o.optString("clientId"));
-            String detail = (c == null ? "鈥? : c.optString("name")) + " 路 " + money(o.optDouble("amount")) + " 路 宸叉敹 " + money(o.optDouble("paid"));
+            String detail = (c == null ? "\u2014" : c.optString("name")) + " \u00B7 " + money(o.optDouble("amount")) + " \u00B7 \u5DF2\u6536 " + money(o.optDouble("paid"));
             addRow(body, o.optString("title"), detail, new Runnable() { @Override public void run() { showOrderDialog(o); } });
         }
     }
 
     private void showPayments() {
-        LinearLayout body = section("鏀舵璁板綍", "+ 璁板綍鏀舵", new Runnable() { @Override public void run() { showPaymentDialog(); } });
-        if (payments.length() == 0) { empty(body, "杩樻病鏈夋敹娆捐褰曘€?"); return; }
+        LinearLayout body = section("\u6536\u6B3E\u8BB0\u5F55", "+ \u8BB0\u5F55\u6536\u6B3E", new Runnable() { @Override public void run() { showPaymentDialog(); } });
+        if (payments.length() == 0) { empty(body, "\u8FD8\u6CA1\u6709\u6536\u6B3E\u8BB0\u5F55\u3002 "); return; }
         for (final JSONObject p : objects(payments)) {
             final JSONObject payment = p;
             JSONObject o = find(orders, p.optString("orderId"));
-            String title = o == null ? "宸插垹闄よ鍗? : o.optString("title");
-            addRow(body, p.optString("date") + " 路 " + money(p.optDouble("amount")), title + " 路 " + p.optString("note", ""), new Runnable() { @Override public void run() { confirmDeletePayment(payment); } });
+            String title = o == null ? "\u5DF2\u5220\u9664\u8BA2\u5355" : o.optString("title");
+            addRow(body, p.optString("date") + " \u00B7 " + money(p.optDouble("amount")), title + " \u00B7 " + p.optString("note", ""), new Runnable() { @Override public void run() { confirmDeletePayment(payment); } });
         }
     }
 
     private void showSearch() {
-        LinearLayout body = section("鍏ㄥ眬鎼滅储", null, null);
-        TextView hint = text("鎼滅储瀹㈡埛銆佽鍗曘€佹敹娆俱€佺數璇濄€佸娉ㄣ€佺姸鎬佹垨鏃ユ湡銆?, 13, MUTED, false);
+        LinearLayout body = section("\u5168\u5C40\u641C\u7D22", null, null);
+        TextView hint = text("\u641C\u7D22\u5BA2\u6237\u3001\u8BA2\u5355\u3001\u6536\u6B3E\u3001\u7535\u8BDD\u3001\u5907\u6CE8\u3001\u72B6\u6001\u6216\u65E5\u671F\u3002", 13, MUTED, false);
         body.addView(hint, fullMargins(0, 0, 0, 10));
         LinearLayout bar = horizontal();
-        final EditText query = edit("杈撳叆鍏抽敭璇?, "");
+        final EditText query = edit("\u8F93\u5165\u5173\u952E\u8BCD", "");
         bar.addView(query, new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1));
         final LinearLayout results = vertical();
-        bar.addView(actionButton("鎼滅储", GREEN, new Runnable() { @Override public void run() { performSearch(query.getText().toString(), results); } }), wrapMargins(8, 0, 0, 0));
+        bar.addView(actionButton("\u641C\u7D22", GREEN, new Runnable() { @Override public void run() { performSearch(query.getText().toString(), results); } }), wrapMargins(8, 0, 0, 0));
         body.addView(bar);
         body.addView(results, fullMargins(0, 10, 0, 0));
         query.requestFocus();
@@ -241,103 +241,92 @@ public class MainActivity extends Activity {
     private void performSearch(String raw, LinearLayout body) {
         String term = raw.trim().toLowerCase(Locale.ROOT);
         body.removeAllViews();
-        if (term.isEmpty()) { status("璇疯緭鍏ュ叧閿瘝"); return; }
+        if (term.isEmpty()) { status("\u8BF7\u8F93\u5165\u5173\u952E\u8BCD"); return; }
         int found = 0;
         for (final JSONObject c : objects(clients)) {
             if (contains(term, c.optString("name"), c.optString("phone"), c.optString("source"), c.optString("status"), c.optString("note"))) {
-                addRow(body, "瀹㈡埛 路 " + c.optString("name"), c.optString("phone", "鈥?) + " 路 " + c.optString("note", ""), new Runnable() { @Override public void run() { showClientDialog(c); } });
+                addRow(body, "\u5BA2\u6237 \u00B7 " + c.optString("name"), c.optString("phone", "\u2014") + " \u00B7 " + c.optString("note", ""), new Runnable() { @Override public void run() { showClientDialog(c); } });
                 found++;
             }
         }
         for (final JSONObject o : objects(orders)) {
             JSONObject c = find(clients, o.optString("clientId"));
             if (contains(term, o.optString("title"), o.optString("status"), o.optString("due"), o.optString("note"), c == null ? "" : c.optString("name"))) {
-                addRow(body, "璁㈠崟 路 " + o.optString("title"), (c == null ? "鈥? : c.optString("name")) + " 路 " + money(o.optDouble("amount")), new Runnable() { @Override public void run() { showOrderDialog(o); } });
+                addRow(body, "\u8BA2\u5355 \u00B7 " + o.optString("title"), (c == null ? "\u2014" : c.optString("name")) + " \u00B7 " + money(o.optDouble("amount")), new Runnable() { @Override public void run() { showOrderDialog(o); } });
                 found++;
             }
         }
         for (final JSONObject p : objects(payments)) {
             JSONObject o = find(orders, p.optString("orderId"));
             if (contains(term, p.optString("date"), p.optString("note"), String.valueOf(p.optDouble("amount")), o == null ? "" : o.optString("title"))) {
-                addRow(body, "鏀舵 路 " + money(p.optDouble("amount")), p.optString("date") + " 路 " + (o == null ? "宸插垹闄よ鍗? : o.optString("title")), new Runnable() { @Override public void run() { confirmDeletePayment(p); } });
+                addRow(body, "\u6536\u6B3E \u00B7 " + money(p.optDouble("amount")), p.optString("date") + " \u00B7 " + (o == null ? "\u5DF2\u5220\u9664\u8BA2\u5355" : o.optString("title")), new Runnable() { @Override public void run() { confirmDeletePayment(p); } });
                 found++;
             }
         }
-        if (found == 0) empty(body, "娌℃湁鎵惧埌鍖归厤鍐呭銆?");
-        status("鎼滅储瀹屾垚锛氭壘鍒?" + found + " 鏉＄粨鏋?);
+        if (found == 0) empty(body, "\u6CA1\u6709\u627E\u5230\u5339\u914D\u5185\u5BB9\u3002 ");
+        status("\u641C\u7D22\u5B8C\u6210\uFF1A\u627E\u5230 " + found + " \u6761\u7ED3\u679C");
     }
 
     private void showClientDialog(final JSONObject existing) {
         LinearLayout form = dialogForm();
-        final EditText name = field(form, "瀹㈡埛鍚嶇О *", existing == null ? "" : existing.optString("name"));
-        final EditText phone = field(form, "鑱旂郴鏂瑰紡", existing == null ? "" : existing.optString("phone"));
-        final EditText source = field(form, "瀹㈡埛鏉ユ簮", existing == null ? "" : existing.optString("source"));
-        final Spinner state = spinner(form, "鐘舵€?, new String[]{"寰呰窡杩?, "杩涜涓?, "宸叉垚浜?}, existing == null ? "寰呰窡杩? : existing.optString("status", "寰呰窡杩?));
-        final EditText note = field(form, "澶囨敞", existing == null ? "" : existing.optString("note"));
-        AlertDialog.Builder builder = new AlertDialog.Builder(this).setTitle(existing == null ? "鏂板瀹㈡埛" : "缂栬緫瀹㈡埛").setView(form).setNegativeButton("鍙栨秷", null).setPositiveButton("淇濆瓨", (d, w) -> {
-            if (name.getText().toString().trim().isEmpty()) { toast("璇峰～鍐欏鎴峰悕绉?); return; }
+        final EditText name = field(form, "\u5BA2\u6237\u540D\u79F0 *", existing == null ? "" : existing.optString("name"));
+        final EditText phone = field(form, "\u8054\u7CFB\u65B9\u5F0F", existing == null ? "" : existing.optString("phone"));
+        final EditText source = field(form, "\u5BA2\u6237\u6765\u6E90", existing == null ? "" : existing.optString("source"));
+        final Spinner state = spinner(form, "\u72B6\u6001", new String[]{"\u5F85\u8DDF\u8FDB", "\u8FDB\u884C\u4E2D", "\u5DF2\u6210\u4EA4"}, existing == null ? "\u5F85\u8DDF\u8FDB" : existing.optString("status", "\u5F85\u8DDF\u8FDB"));
+        final EditText note = field(form, "\u5907\u6CE8", existing == null ? "" : existing.optString("note"));
+        AlertDialog.Builder builder = new AlertDialog.Builder(this).setTitle(existing == null ? "\u65B0\u589E\u5BA2\u6237" : "\u7F16\u8F91\u5BA2\u6237").setView(form).setNegativeButton("\u53D6\u6D88", null).setPositiveButton("\u4FDD\u5B58", (d, w) -> {
+            if (name.getText().toString().trim().isEmpty()) { toast("\u8BF7\u586B\u5199\u5BA2\u6237\u540D\u79F0"); return; }
             try {
                 JSONObject c = existing == null ? new JSONObject() : existing;
                 if (existing == null) { c.put("id", UUID.randomUUID().toString()); clients.put(c); }
                 c.put("name", name.getText().toString().trim()); c.put("phone", phone.getText().toString().trim()); c.put("source", source.getText().toString().trim()); c.put("status", state.getSelectedItem().toString()); c.put("note", note.getText().toString().trim());
-                save(); status("瀹㈡埛宸蹭繚瀛?); showPage("瀹㈡埛");
-            } catch (Exception e) { toast("淇濆瓨澶辫触"); }
+                save(); status("\u5BA2\u6237\u5DF2\u4FDD\u5B58"); showPage("\u5BA2\u6237");
+            } catch (Exception e) { toast("\u4FDD\u5B58\u5931\u8D25"); }
         });
-        if (existing != null) builder.setNeutralButton("鍒犻櫎", (d, w) -> confirmDeleteClient(existing));
+        if (existing != null) builder.setNeutralButton("\u5220\u9664", (d, w) -> confirmDeleteClient(existing));
         builder.show();
     }
 
     private void showOrderDialog(final JSONObject existing) {
         List<JSONObject> available = objects(clients);
-        if (available.isEmpty()) { toast("璇峰厛鏂板瀹㈡埛"); showClientDialog(null); return; }
+        if (available.isEmpty()) { toast("\u8BF7\u5148\u65B0\u589E\u5BA2\u6237"); showClientDialog(null); return; }
         LinearLayout form = dialogForm();
         ArrayList<String> clientNames = new ArrayList<>(); final ArrayList<String> clientIds = new ArrayList<>();
         for (JSONObject c : available) { clientNames.add(c.optString("name")); clientIds.add(c.optString("id")); }
-        final Spinner customer = spinner(form, "瀹㈡埛 *", clientNames.toArray(new String[0]), existing == null ? clientNames.get(0) : nameFor(existing.optString("clientId")));
-        final EditText title = field(form, "椤圭洰/鏈嶅姟 *", existing == null ? "" : existing.optString("title"));
-        final EditText amount = field(form, "璁㈠崟閲戦锛堝厓锛?", existing == null ? "" : String.valueOf(existing.optDouble("amount")));
-        final EditText paid = field(form, "宸叉敹閲戦锛堝厓锛?, existing == null ? "0" : String.valueOf(existing.optDouble("paid")));
-        final EditText due = field(form, "鎴鏃ユ湡锛圷YYY-MM-DD锛?, existing == null ? "" : existing.optString("due"));
-        final Spinner state = spinner(form, "璁㈠崟鐘舵€?, new String[]{"寰呰窡杩?, "杩涜涓?, "宸插畬鎴?}, existing == null ? "寰呰窡杩? : existing.optString("status", "寰呰窡杩?));
-        final EditText note = field(form, "澶囨敞", existing == null ? "" : existing.optString("note"));
-        AlertDialog.Builder builder = new AlertDialog.Builder(this).setTitle(existing == null ? "鏂板缓璁㈠崟" : "缂栬緫璁㈠崟").setView(form).setNegativeButton("鍙栨秷", null).setPositiveButton("淇濆瓨", (d, w) -> {
+        final Spinner customer = spinner(form, "\u5BA2\u6237 *", clientNames.toArray(new String[0]), existing == null ? clientNames.get(0) : nameFor(existing.optString("clientId")));
+        final EditText title = field(form, "\u9879\u76EE/\u670D\u52A1 *", existing == null ? "" : existing.optString("title"));
+        final EditText amount = field(form, "\u8BA2\u5355\u91D1\u989D\uFF08\u5143\uFF09*", existing == null ? "" : String.valueOf(existing.optDouble("amount")));
+        final EditText paid = field(form, "\u5DF2\u6536\u91D1\u989D\uFF08\u5143\uFF09", existing == null ? "0" : String.valueOf(existing.optDouble("paid")));
+        final EditText due = field(form, "\u622A\u6B62\u65E5\u671F\uFF08YYYY-MM-DD\uFF09", existing == null ? "" : existing.optString("due"));
+        final Spinner state = spinner(form, "\u8BA2\u5355\u72B6\u6001", new String[]{"\u5F85\u8DDF\u8FDB", "\u8FDB\u884C\u4E2D", "\u5DF2\u5B8C\u6210"}, existing == null ? "\u5F85\u8DDF\u8FDB" : existing.optString("status", "\u5F85\u8DDF\u8FDB"));
+        final EditText note = field(form, "\u5907\u6CE8", existing == null ? "" : existing.optString("note"));
+        AlertDialog.Builder builder = new AlertDialog.Builder(this).setTitle(existing == null ? "\u65B0\u5EFA\u8BA2\u5355" : "\u7F16\u8F91\u8BA2\u5355").setView(form).setNegativeButton("\u53D6\u6D88", null).setPositiveButton("\u4FDD\u5B58", (d, w) -> {
             try {
                 double a = Double.parseDouble(amount.getText().toString().trim()); double p = Double.parseDouble(paid.getText().toString().trim());
-                if (title.getText().toString().trim().isEmpty() || a < 0 || p < 0 || p > a) { toast("璇锋鏌ラ」鐩拰閲戦"); return; }
+                if (title.getText().toString().trim().isEmpty() || a < 0 || p < 0 || p > a) { toast("\u8BF7\u68C0\u67E5\u9879\u76EE\u548C\u91D1\u989D"); return; }
                 JSONObject o = existing == null ? new JSONObject() : existing;
                 if (existing == null) { o.put("id", UUID.randomUUID().toString()); orders.put(o); }
                 o.put("clientId", clientIds.get(customer.getSelectedItemPosition())); o.put("title", title.getText().toString().trim()); o.put("amount", a); o.put("paid", p); o.put("due", due.getText().toString().trim()); o.put("status", state.getSelectedItem().toString()); o.put("note", note.getText().toString().trim());
-                save(); status("璁㈠崟宸蹭繚瀛?); showPage("璁㈠崟");
-            } catch (Exception e) { toast("閲戦鏍煎紡涓嶆纭?); }
+                save(); status("\u8BA2\u5355\u5DF2\u4FDD\u5B58"); showPage("\u8BA2\u5355");
+            } catch (Exception e) { toast("\u91D1\u989D\u683C\u5F0F\u4E0D\u6B63\u786E"); }
         });
-        if (existing != null) builder.setNeutralButton("鍒犻櫎", (d, w) -> confirmDeleteOrder(existing));
+        if (existing != null) builder.setNeutralButton("\u5220\u9664", (d, w) -> confirmDeleteOrder(existing));
         builder.show();
     }
 
     private void showPaymentDialog() {
         ArrayList<JSONObject> available = new ArrayList<>();
         for (JSONObject o : objects(orders)) if (o.optDouble("paid") < o.optDouble("amount")) available.add(o);
-        if (available.isEmpty()) { toast("娌℃湁鍙敹娆剧殑璁㈠崟"); return; }
+        if (available.isEmpty()) { toast("\u6CA1\u6709\u53EF\u6536\u6B3E\u7684\u8BA2\u5355"); return; }
         LinearLayout form = dialogForm();
         ArrayList<String> labels = new ArrayList<>(); final ArrayList<String> ids = new ArrayList<>();
-        for (JSONObject o : available) { labels.add(o.optString("title") + "锛堝緟鏀?" + money(o.optDouble("amount") - o.optDouble("paid")) + "锛?); ids.add(o.optString("id")); }
-        final Spinner orderSpin = spinner(form, "鍏宠仈璁㈠崟 *", labels.toArray(new String[0]), labels.get(0));
-        final EditText amount = field(form, "鏀舵閲戦锛堝厓锛?", "");
-        final EditText when = field(form, "鏀舵鏃ユ湡", today());
-        final EditText note = field(form, "澶囨敞", "");
-        new AlertDialog.Builder(this).setTitle("璁板綍鏀舵").setView(form).setNegativeButton("鍙栨秷", null).setPositiveButton("淇濆瓨", (d, w) -> {
-            try {
-                JSONObject order = find(orders, ids.get(orderSpin.getSelectedItemPosition())); double a = Double.parseDouble(amount.getText().toString().trim());
-                if (a <= 0 || a > order.optDouble("a…1318 tokens truncated…瀹㈡埛鍚嶇О", "鑱旂郴鏂瑰紡", "鏉ユ簮", "鐘舵€?, "澶囨敞", "璁㈠崟鏁?});
-        for (JSONObject c : objects(clients)) { int count = 0; for (JSONObject o : objects(orders)) if (c.optString("id").equals(o.optString("clientId"))) count++; customerRows.add(new String[]{c.optString("name"), c.optString("phone"), c.optString("source"), c.optString("status"), c.optString("note"), String.valueOf(count)}); }
-        List<String[]> orderRows = new ArrayList<>(); orderRows.add(new String[]{"椤圭洰/鏈嶅姟", "瀹㈡埛", "璁㈠崟閲戦", "宸叉敹閲戦", "寰呮敹閲戦", "鎴鏃ユ湡", "鐘舵€?, "澶囨敞"});
-        for (JSONObject o : objects(orders)) { JSONObject c = find(clients, o.optString("clientId")); double amount = o.optDouble("amount"), paid = o.optDouble("paid"); orderRows.add(new String[]{o.optString("title"), c == null ? "宸插垹闄ゅ鎴? : c.optString("name"), decimal(amount), decimal(paid), decimal(amount-paid), o.optString("due"), o.optString("status"), o.optString("note")}); }
-        List<String[]> paymentRows = new ArrayList<>(); paymentRows.add(new String[]{"鏀舵鏃ユ湡", "璁㈠崟", "瀹㈡埛", "鏀舵閲戦", "澶囨敞"});
-        for (JSONObject p : objects(payments)) { JSONObject o = find(orders, p.optString("orderId")); JSONObject c = o == null ? null : find(clients, o.optString("clientId")); paymentRows.add(new String[]{p.optString("date"), o == null ? "宸插垹闄よ鍗? : o.optString("title"), c == null ? "鈥? : c.optString("name"), decimal(p.optDouble("amount")), p.optString("note")}); }
+        for (JSONObject o : available) { labels.add(o.optString("title") + "\uFF08\u5F85\u6536 " + money(o.optDouble("amount") - o.optDouble("paid")) + "\uFF09"); ids.add(o.optString("id")); }
+        final Spinner orderSpin = sp…1883 tokens truncated…, "\u6536\u6B3E\u91D1\u989D", "\u5907\u6CE8"});
+        for (JSONObject p : objects(payments)) { JSONObject o = find(orders, p.optString("orderId")); JSONObject c = o == null ? null : find(clients, o.optString("clientId")); paymentRows.add(new String[]{p.optString("date"), o == null ? "\u5DF2\u5220\u9664\u8BA2\u5355" : o.optString("title"), c == null ? "\u2014" : c.optString("name"), decimal(p.optDouble("amount")), p.optString("note")}); }
         try (OutputStream raw = getContentResolver().openOutputStream(uri); ZipOutputStream zip = new ZipOutputStream(raw)) {
             put(zip, "[Content_Types].xml", "<?xml version=\"1.0\" encoding=\"UTF-8\"?><Types xmlns=\"http://schemas.openxmlformats.org/package/2006/content-types\"><Default Extension=\"rels\" ContentType=\"application/vnd.openxmlformats-package.relationships+xml\"/><Default Extension=\"xml\" ContentType=\"application/xml\"/><Override PartName=\"/xl/workbook.xml\" ContentType=\"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml\"/><Override PartName=\"/xl/worksheets/sheet1.xml\" ContentType=\"application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml\"/><Override PartName=\"/xl/worksheets/sheet2.xml\" ContentType=\"application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml\"/><Override PartName=\"/xl/worksheets/sheet3.xml\" ContentType=\"application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml\"/></Types>");
             put(zip, "_rels/.rels", "<?xml version=\"1.0\" encoding=\"UTF-8\"?><Relationships xmlns=\"http://schemas.openxmlformats.org/package/2006/relationships\"><Relationship Id=\"rId1\" Type=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument\" Target=\"xl/workbook.xml\"/></Relationships>");
-            put(zip, "xl/workbook.xml", "<?xml version=\"1.0\" encoding=\"UTF-8\"?><workbook xmlns=\"http://schemas.openxmlformats.org/spreadsheetml/2006/main\" xmlns:r=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships\"><sheets><sheet name=\"瀹㈡埛\" sheetId=\"1\" r:id=\"rId1\"/><sheet name=\"璁㈠崟\" sheetId=\"2\" r:id=\"rId2\"/><sheet name=\"鏀舵\" sheetId=\"3\" r:id=\"rId3\"/></sheets></workbook>");
+            put(zip, "xl/workbook.xml", "<?xml version=\"1.0\" encoding=\"UTF-8\"?><workbook xmlns=\"http://schemas.openxmlformats.org/spreadsheetml/2006/main\" xmlns:r=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships\"><sheets><sheet name=\"\u5BA2\u6237\" sheetId=\"1\" r:id=\"rId1\"/><sheet name=\"\u8BA2\u5355\" sheetId=\"2\" r:id=\"rId2\"/><sheet name=\"\u6536\u6B3E\" sheetId=\"3\" r:id=\"rId3\"/></sheets></workbook>");
             put(zip, "xl/_rels/workbook.xml.rels", "<?xml version=\"1.0\" encoding=\"UTF-8\"?><Relationships xmlns=\"http://schemas.openxmlformats.org/package/2006/relationships\"><Relationship Id=\"rId1\" Type=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet\" Target=\"worksheets/sheet1.xml\"/><Relationship Id=\"rId2\" Type=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet\" Target=\"worksheets/sheet2.xml\"/><Relationship Id=\"rId3\" Type=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet\" Target=\"worksheets/sheet3.xml\"/></Relationships>");
             put(zip, "xl/worksheets/sheet1.xml", sheetXml(customerRows)); put(zip, "xl/worksheets/sheet2.xml", sheetXml(orderRows)); put(zip, "xl/worksheets/sheet3.xml", sheetXml(paymentRows));
         }
@@ -362,7 +351,7 @@ public class MainActivity extends Activity {
     private String nameFor(String id) { JSONObject c = find(clients, id); return c == null ? "" : c.optString("name"); }
     private String today() { return new SimpleDateFormat("yyyy-MM-dd", Locale.US).format(new Date()); }
     private String decimal(double value) { return String.format(Locale.US, "%.2f", value); }
-    private String money(double value) { return String.format(Locale.CHINA, "楼%,.2f", value); }
+    private String money(double value) { return String.format(Locale.CHINA, "\u00A5%,.2f", value); }
     private void toast(String value) { Toast.makeText(this, value, Toast.LENGTH_SHORT).show(); }
     private void status(String value) { if (statusView != null) statusView.setText(value); }
 
@@ -378,7 +367,7 @@ public class MainActivity extends Activity {
     private Button actionButton(final String label, int baseColor, final Runnable action) {
         final Button button = new Button(this); button.setText(label); button.setTextSize(13); button.setAllCaps(false); button.setTextColor(Color.WHITE); button.setPadding(dp(11), dp(4), dp(11), dp(4)); button.setBackground(round(baseColor == DARK ? Color.rgb(41, 91, 80) : baseColor, dp(10)));
         button.setOnTouchListener(new View.OnTouchListener() { @Override public boolean onTouch(View v, MotionEvent event) { if (event.getAction() == MotionEvent.ACTION_DOWN) v.setAlpha(0.58f); if (event.getAction() == MotionEvent.ACTION_UP || event.getAction() == MotionEvent.ACTION_CANCEL) v.setAlpha(1f); return false; } });
-        button.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { status("宸茬偣鍑伙細" + label); action.run(); } });
+        button.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { status("\u5DF2\u70B9\u51FB\uFF1A" + label); action.run(); } });
         return button;
     }
 
@@ -401,25 +390,25 @@ public class MainActivity extends Activity {
 
     private void loadQuotes() {
         Collections.addAll(quotes,
-            "鎴戞€濇晠鎴戝湪銆傗€斺€旂瑳鍗″皵", "鐭ヨ瘑灏辨槸鍔涢噺銆傗€斺€斿煿鏍?, "瀛﹁€屼笉鎬濆垯缃旓紝鎬濊€屼笉瀛﹀垯娈嗐€傗€斺€斿瓟瀛?, "涓嶇Н璺锛屾棤浠ヨ嚦鍗冮噷銆傗€斺€旇崁瀛?, "鍗冮噷涔嬭锛屽浜庤冻涓嬨€傗€斺€旇€佸瓙",
-            "澶╄鍋ワ紝鍚涘瓙浠ヨ嚜寮轰笉鎭€傗€斺€斿懆鏄?, "璺极婕叾淇繙鍏紝鍚惧皢涓婁笅鑰屾眰绱€傗€斺€斿眻鍘?, "涓氱簿浜庡嫟锛岃崚浜庡瑝銆傗€斺€旈煩鎰?, "璇讳竾鍗蜂功锛岃涓囬噷璺€傗€斺€斿垬褰?, "涓変汉琛岋紝蹇呮湁鎴戝笀鐒夈€傗€斺€斿瓟瀛?,
-            "宸辨墍涓嶆锛屽嬁鏂戒簬浜恒€傗€斺€斿瓟瀛?, "鐭ヤ箣鑰呬笉濡傚ソ涔嬭€咃紝濂戒箣鑰呬笉濡備箰涔嬭€呫€傗€斺€斿瓟瀛?, "闈欎互淇韩锛屼凯浠ュ吇寰枫€傗€斺€旇钁涗寒", "闈炴贰娉婃棤浠ユ槑蹇楋紝闈炲畞闈欐棤浠ヨ嚧杩溿€傗€斺€旇钁涗寒", "娴风撼鐧惧窛锛屾湁瀹逛箖澶с€傗€斺€旀灄鍒欏緪",
-            "鍏堝ぉ涓嬩箣蹇ц€屽咖锛屽悗澶╀笅涔嬩箰鑰屼箰銆傗€斺€旇寖浠叉饭", "绌峰垯鐙杽鍏惰韩锛岃揪鍒欏吋鍠勫ぉ涓嬨€傗€斺€斿瓱瀛?, "鐢熶簬蹇ф偅锛屾浜庡畨涔愩€傗€斺€斿瓱瀛?, "浜烘棤杩滆檻锛屽繀鏈夎繎蹇с€傗€斺€斿瓟瀛?, "瑷€蹇呬俊锛岃蹇呮灉銆傗€斺€斿瓟瀛?,
-            "鏁忚€屽ソ瀛︼紝涓嶈€讳笅闂€傗€斺€斿瓟瀛?, "鍚剧敓涔熸湁娑紝鑰岀煡涔熸棤娑€傗€斺€斿簞瀛?, "鍚堟姳涔嬫湪锛岀敓浜庢鏈€傗€斺€旇€佸瓙", "涓鸿€呭父鎴愶紝琛岃€呭父鑷炽€傗€斺€旀檹瀛愭槬绉?, "蹇椾笉寮鸿€呮櫤涓嶈揪銆傗€斺€斿ⅷ瀛?,
-            "鑳滀汉鑰呮湁鍔涳紝鑷儨鑰呭己銆傗€斺€旇€佸瓙", "澶╀笅闅句簨锛屽繀浣滀簬鏄撱€傗€斺€旇€佸瓙", "涓存笂缇￠奔锛屼笉濡傞€€鑰岀粨缃戙€傗€斺€旀樊鍗楀瓙", "灏戒俊涔︼紝鍒欎笉濡傛棤涔︺€傗€斺€斿瓱瀛?, "涓嶄互瑙勭煩锛屼笉鑳芥垚鏂瑰渾銆傗€斺€斿瓱瀛?,
-            "鑻熸棩鏂帮紝鏃ユ棩鏂帮紝鍙堟棩鏂般€傗€斺€旂ぜ璁?, "浜虹敓鑷彜璋佹棤姝伙紝鐣欏彇涓瑰績鐓ф睏闈掋€傗€斺€旀枃澶╃ゥ", "浼氬綋鍑岀粷椤讹紝涓€瑙堜紬灞卞皬銆傗€斺€旀潨鐢?, "闀块鐮存氮浼氭湁鏃讹紝鐩存寕浜戝竼娴庢钵娴枫€傗€斺€旀潕鐧?, "娌夎垷渚х晹鍗冨竼杩囷紝鐥呮爲鍓嶅ご涓囨湪鏄ャ€傗€斺€斿垬绂归敗",
-            "绾镐笂寰楁潵缁堣娴咃紝缁濈煡姝や簨瑕佽含琛屻€傗€斺€旈檰娓?, "妯湅鎴愬箔渚ф垚宄帮紝杩滆繎楂樹綆鍚勪笉鍚屻€傗€斺€旇嫃杞?, "涓嶇晱娴簯閬湜鐪硷紝鍙紭韬湪鏈€楂樺眰銆傗€斺€旂帇瀹夌煶", "闂笭閭ｅ緱娓呭璁革紝涓烘湁婧愬ご娲绘按鏉ャ€傗€斺€旀湵鐔?, "鑾瓑闂诧紝鐧戒簡灏戝勾澶达紝绌烘偛鍒囥€傗€斺€斿渤椋?,
-            "浜虹敓鍦ㄥ嫟锛屼笉绱綍鑾枫€傗€斺€斿紶琛?, "澶╀笅鍏翠骸锛屽尮澶湁璐ｃ€傗€斺€旈【鐐庢", "鏈夊織鑰咃紝浜嬬珶鎴愩€傗€斺€斿悗姹変功", "鐧鹃椈涓嶅涓€瑙併€傗€斺€旀眽涔?, "鍏煎惉鍒欐槑锛屽亸淇″垯鏆椼€傗€斺€旈瓘寰?,
-            "灏烘湁鎵€鐭紝瀵告湁鎵€闀裤€傗€斺€斿眻鍘?, "宸ユ鍠勫叾浜嬶紝蹇呭厛鍒╁叾鍣ㄣ€傗€斺€斿瓟瀛?, "鏃堕棿灏辨槸鐢熷懡銆傗€斺€旈瞾杩?, "鍏跺疄鍦颁笂鏈病鏈夎矾锛岃蛋鐨勪汉澶氫簡锛屼篃渚挎垚浜嗚矾銆傗€斺€旈瞾杩?, "涓轰腑鍗庝箣宕涜捣鑰岃涔︺€傗€斺€斿懆鎭╂潵",
-            "The only way to do great work is to love what you do. 鈥?Steve Jobs", "Stay hungry, stay foolish. 鈥?Steve Jobs", "Innovation distinguishes between a leader and a follower. 鈥?Steve Jobs", "Whether you think you can or you think you cannot, you are right. 鈥?Henry Ford", "The future depends on what you do today. 鈥?Gandhi",
-            "It always seems impossible until it is done. 鈥?Nelson Mandela", "Success is not final; failure is not fatal. 鈥?Winston Churchill", "The secret of getting ahead is getting started. 鈥?Mark Twain", "Believe you can and you are halfway there. 鈥?Theodore Roosevelt", "If opportunity does not knock, build a door. 鈥?Milton Berle",
-            "The best way to predict the future is to create it. 鈥?Peter Drucker", "What we think, we become. 鈥?Buddha", "Do one thing every day that scares you. 鈥?Eleanor Roosevelt", "Dream big and dare to fail. 鈥?Norman Vaughan", "Action is the foundational key to all success. 鈥?Pablo Picasso",
-            "Quality is not an act, it is a habit. 鈥?Aristotle", "Simplicity is the ultimate sophistication. 鈥?Leonardo da Vinci", "Well begun is half done. 鈥?Aristotle", "The unexamined life is not worth living. 鈥?Socrates", "The only true wisdom is in knowing you know nothing. 鈥?Socrates",
-            "What you do speaks so loudly that I cannot hear what you say. 鈥?Emerson", "If you can dream it, you can do it. 鈥?Walt Disney", "Done is better than perfect. 鈥?Sheryl Sandberg", "The best preparation for tomorrow is doing your best today. 鈥?H. Jackson Brown Jr.", "The harder I work, the luckier I get. 鈥?Samuel Goldwyn",
-            "Start where you are. Use what you have. Do what you can. 鈥?Arthur Ashe", "A year from now you may wish you had started today. 鈥?Karen Lamb", "The expert in anything was once a beginner. 鈥?Helen Hayes", "Great things are done by a series of small things brought together. 鈥?Van Gogh", "Success is the sum of small efforts, repeated day in and day out. 鈥?Robert Collier",
-            "The only limit to our realization of tomorrow is our doubts of today. 鈥?F. D. Roosevelt", "Happiness depends upon ourselves. 鈥?Aristotle", "Knowledge speaks, but wisdom listens. 鈥?Jimi Hendrix", "The purpose of our lives is to be happy. 鈥?Dalai Lama", "In the middle of difficulty lies opportunity. 鈥?Albert Einstein",
-            "Logic will get you from A to B. Imagination will take you everywhere. 鈥?Albert Einstein", "Learn as if you will live forever, live like you will die tomorrow. 鈥?Gandhi", "Success usually comes to those who are too busy to be looking for it. 鈥?Thoreau", "The future belongs to those who believe in the beauty of their dreams. 鈥?Eleanor Roosevelt", "A person who never made a mistake never tried anything new. 鈥?Albert Einstein",
-            "Do not watch the clock; do what it does. Keep going. 鈥?Sam Levenson", "Everything you can imagine is real. 鈥?Pablo Picasso", "The best time to plant a tree was twenty years ago. The second best time is now. 鈥?Chinese proverb", "You miss one hundred percent of the shots you do not take. 鈥?Wayne Gretzky", "Small deeds done are better than great deeds planned. 鈥?Peter Marshall"
+            "\u6211\u601D\u6545\u6211\u5728\u3002\u2014\u2014\u7B1B\u5361\u5C14", "\u77E5\u8BC6\u5C31\u662F\u529B\u91CF\u3002\u2014\u2014\u57F9\u6839", "\u5B66\u800C\u4E0D\u601D\u5219\u7F54\uFF0C\u601D\u800C\u4E0D\u5B66\u5219\u6B86\u3002\u2014\u2014\u5B54\u5B50", "\u4E0D\u79EF\u8DEC\u6B65\uFF0C\u65E0\u4EE5\u81F3\u5343\u91CC\u3002\u2014\u2014\u8340\u5B50", "\u5343\u91CC\u4E4B\u884C\uFF0C\u59CB\u4E8E\u8DB3\u4E0B\u3002\u2014\u2014\u8001\u5B50",
+            "\u5929\u884C\u5065\uFF0C\u541B\u5B50\u4EE5\u81EA\u5F3A\u4E0D\u606F\u3002\u2014\u2014\u5468\u6613", "\u8DEF\u6F2B\u6F2B\u5176\u4FEE\u8FDC\u516E\uFF0C\u543E\u5C06\u4E0A\u4E0B\u800C\u6C42\u7D22\u3002\u2014\u2014\u5C48\u539F", "\u4E1A\u7CBE\u4E8E\u52E4\uFF0C\u8352\u4E8E\u5B09\u3002\u2014\u2014\u97E9\u6108", "\u8BFB\u4E07\u5377\u4E66\uFF0C\u884C\u4E07\u91CC\u8DEF\u3002\u2014\u2014\u5218\u5F5D", "\u4E09\u4EBA\u884C\uFF0C\u5FC5\u6709\u6211\u5E08\u7109\u3002\u2014\u2014\u5B54\u5B50",
+            "\u5DF1\u6240\u4E0D\u6B32\uFF0C\u52FF\u65BD\u4E8E\u4EBA\u3002\u2014\u2014\u5B54\u5B50", "\u77E5\u4E4B\u8005\u4E0D\u5982\u597D\u4E4B\u8005\uFF0C\u597D\u4E4B\u8005\u4E0D\u5982\u4E50\u4E4B\u8005\u3002\u2014\u2014\u5B54\u5B50", "\u9759\u4EE5\u4FEE\u8EAB\uFF0C\u4FED\u4EE5\u517B\u5FB7\u3002\u2014\u2014\u8BF8\u845B\u4EAE", "\u975E\u6DE1\u6CCA\u65E0\u4EE5\u660E\u5FD7\uFF0C\u975E\u5B81\u9759\u65E0\u4EE5\u81F4\u8FDC\u3002\u2014\u2014\u8BF8\u845B\u4EAE", "\u6D77\u7EB3\u767E\u5DDD\uFF0C\u6709\u5BB9\u4E43\u5927\u3002\u2014\u2014\u6797\u5219\u5F90",
+            "\u5148\u5929\u4E0B\u4E4B\u5FE7\u800C\u5FE7\uFF0C\u540E\u5929\u4E0B\u4E4B\u4E50\u800C\u4E50\u3002\u2014\u2014\u8303\u4EF2\u6DF9", "\u7A77\u5219\u72EC\u5584\u5176\u8EAB\uFF0C\u8FBE\u5219\u517C\u5584\u5929\u4E0B\u3002\u2014\u2014\u5B5F\u5B50", "\u751F\u4E8E\u5FE7\u60A3\uFF0C\u6B7B\u4E8E\u5B89\u4E50\u3002\u2014\u2014\u5B5F\u5B50", "\u4EBA\u65E0\u8FDC\u8651\uFF0C\u5FC5\u6709\u8FD1\u5FE7\u3002\u2014\u2014\u5B54\u5B50", "\u8A00\u5FC5\u4FE1\uFF0C\u884C\u5FC5\u679C\u3002\u2014\u2014\u5B54\u5B50",
+            "\u654F\u800C\u597D\u5B66\uFF0C\u4E0D\u803B\u4E0B\u95EE\u3002\u2014\u2014\u5B54\u5B50", "\u543E\u751F\u4E5F\u6709\u6DAF\uFF0C\u800C\u77E5\u4E5F\u65E0\u6DAF\u3002\u2014\u2014\u5E84\u5B50", "\u5408\u62B1\u4E4B\u6728\uFF0C\u751F\u4E8E\u6BEB\u672B\u3002\u2014\u2014\u8001\u5B50", "\u4E3A\u8005\u5E38\u6210\uFF0C\u884C\u8005\u5E38\u81F3\u3002\u2014\u2014\u664F\u5B50\u6625\u79CB", "\u5FD7\u4E0D\u5F3A\u8005\u667A\u4E0D\u8FBE\u3002\u2014\u2014\u58A8\u5B50",
+            "\u80DC\u4EBA\u8005\u6709\u529B\uFF0C\u81EA\u80DC\u8005\u5F3A\u3002\u2014\u2014\u8001\u5B50", "\u5929\u4E0B\u96BE\u4E8B\uFF0C\u5FC5\u4F5C\u4E8E\u6613\u3002\u2014\u2014\u8001\u5B50", "\u4E34\u6E0A\u7FA1\u9C7C\uFF0C\u4E0D\u5982\u9000\u800C\u7ED3\u7F51\u3002\u2014\u2014\u6DEE\u5357\u5B50", "\u5C3D\u4FE1\u4E66\uFF0C\u5219\u4E0D\u5982\u65E0\u4E66\u3002\u2014\u2014\u5B5F\u5B50", "\u4E0D\u4EE5\u89C4\u77E9\uFF0C\u4E0D\u80FD\u6210\u65B9\u5706\u3002\u2014\u2014\u5B5F\u5B50",
+            "\u82DF\u65E5\u65B0\uFF0C\u65E5\u65E5\u65B0\uFF0C\u53C8\u65E5\u65B0\u3002\u2014\u2014\u793C\u8BB0", "\u4EBA\u751F\u81EA\u53E4\u8C01\u65E0\u6B7B\uFF0C\u7559\u53D6\u4E39\u5FC3\u7167\u6C57\u9752\u3002\u2014\u2014\u6587\u5929\u7965", "\u4F1A\u5F53\u51CC\u7EDD\u9876\uFF0C\u4E00\u89C8\u4F17\u5C71\u5C0F\u3002\u2014\u2014\u675C\u752B", "\u957F\u98CE\u7834\u6D6A\u4F1A\u6709\u65F6\uFF0C\u76F4\u6302\u4E91\u5E06\u6D4E\u6CA7\u6D77\u3002\u2014\u2014\u674E\u767D", "\u6C89\u821F\u4FA7\u7554\u5343\u5E06\u8FC7\uFF0C\u75C5\u6811\u524D\u5934\u4E07\u6728\u6625\u3002\u2014\u2014\u5218\u79B9\u9521",
+            "\u7EB8\u4E0A\u5F97\u6765\u7EC8\u89C9\u6D45\uFF0C\u7EDD\u77E5\u6B64\u4E8B\u8981\u8EAC\u884C\u3002\u2014\u2014\u9646\u6E38", "\u6A2A\u770B\u6210\u5CAD\u4FA7\u6210\u5CF0\uFF0C\u8FDC\u8FD1\u9AD8\u4F4E\u5404\u4E0D\u540C\u3002\u2014\u2014\u82CF\u8F7C", "\u4E0D\u754F\u6D6E\u4E91\u906E\u671B\u773C\uFF0C\u53EA\u7F18\u8EAB\u5728\u6700\u9AD8\u5C42\u3002\u2014\u2014\u738B\u5B89\u77F3", "\u95EE\u6E20\u90A3\u5F97\u6E05\u5982\u8BB8\uFF0C\u4E3A\u6709\u6E90\u5934\u6D3B\u6C34\u6765\u3002\u2014\u2014\u6731\u71B9", "\u83AB\u7B49\u95F2\uFF0C\u767D\u4E86\u5C11\u5E74\u5934\uFF0C\u7A7A\u60B2\u5207\u3002\u2014\u2014\u5CB3\u98DE",
+            "\u4EBA\u751F\u5728\u52E4\uFF0C\u4E0D\u7D22\u4F55\u83B7\u3002\u2014\u2014\u5F20\u8861", "\u5929\u4E0B\u5174\u4EA1\uFF0C\u5339\u592B\u6709\u8D23\u3002\u2014\u2014\u987E\u708E\u6B66", "\u6709\u5FD7\u8005\uFF0C\u4E8B\u7ADF\u6210\u3002\u2014\u2014\u540E\u6C49\u4E66", "\u767E\u95FB\u4E0D\u5982\u4E00\u89C1\u3002\u2014\u2014\u6C49\u4E66", "\u517C\u542C\u5219\u660E\uFF0C\u504F\u4FE1\u5219\u6697\u3002\u2014\u2014\u9B4F\u5F81",
+            "\u5C3A\u6709\u6240\u77ED\uFF0C\u5BF8\u6709\u6240\u957F\u3002\u2014\u2014\u5C48\u539F", "\u5DE5\u6B32\u5584\u5176\u4E8B\uFF0C\u5FC5\u5148\u5229\u5176\u5668\u3002\u2014\u2014\u5B54\u5B50", "\u65F6\u95F4\u5C31\u662F\u751F\u547D\u3002\u2014\u2014\u9C81\u8FC5", "\u5176\u5B9E\u5730\u4E0A\u672C\u6CA1\u6709\u8DEF\uFF0C\u8D70\u7684\u4EBA\u591A\u4E86\uFF0C\u4E5F\u4FBF\u6210\u4E86\u8DEF\u3002\u2014\u2014\u9C81\u8FC5", "\u4E3A\u4E2D\u534E\u4E4B\u5D1B\u8D77\u800C\u8BFB\u4E66\u3002\u2014\u2014\u5468\u6069\u6765",
+            "The only way to do great work is to love what you do. \u2014 Steve Jobs", "Stay hungry, stay foolish. \u2014 Steve Jobs", "Innovation distinguishes between a leader and a follower. \u2014 Steve Jobs", "Whether you think you can or you think you cannot, you are right. \u2014 Henry Ford", "The future depends on what you do today. \u2014 Gandhi",
+            "It always seems impossible until it is done. \u2014 Nelson Mandela", "Success is not final; failure is not fatal. \u2014 Winston Churchill", "The secret of getting ahead is getting started. \u2014 Mark Twain", "Believe you can and you are halfway there. \u2014 Theodore Roosevelt", "If opportunity does not knock, build a door. \u2014 Milton Berle",
+            "The best way to predict the future is to create it. \u2014 Peter Drucker", "What we think, we become. \u2014 Buddha", "Do one thing every day that scares you. \u2014 Eleanor Roosevelt", "Dream big and dare to fail. \u2014 Norman Vaughan", "Action is the foundational key to all success. \u2014 Pablo Picasso",
+            "Quality is not an act, it is a habit. \u2014 Aristotle", "Simplicity is the ultimate sophistication. \u2014 Leonardo da Vinci", "Well begun is half done. \u2014 Aristotle", "The unexamined life is not worth living. \u2014 Socrates", "The only true wisdom is in knowing you know nothing. \u2014 Socrates",
+            "What you do speaks so loudly that I cannot hear what you say. \u2014 Emerson", "If you can dream it, you can do it. \u2014 Walt Disney", "Done is better than perfect. \u2014 Sheryl Sandberg", "The best preparation for tomorrow is doing your best today. \u2014 H. Jackson Brown Jr.", "The harder I work, the luckier I get. \u2014 Samuel Goldwyn",
+            "Start where you are. Use what you have. Do what you can. \u2014 Arthur Ashe", "A year from now you may wish you had started today. \u2014 Karen Lamb", "The expert in anything was once a beginner. \u2014 Helen Hayes", "Great things are done by a series of small things brought together. \u2014 Van Gogh", "Success is the sum of small efforts, repeated day in and day out. \u2014 Robert Collier",
+            "The only limit to our realization of tomorrow is our doubts of today. \u2014 F. D. Roosevelt", "Happiness depends upon ourselves. \u2014 Aristotle", "Knowledge speaks, but wisdom listens. \u2014 Jimi Hendrix", "The purpose of our lives is to be happy. \u2014 Dalai Lama", "In the middle of difficulty lies opportunity. \u2014 Albert Einstein",
+            "Logic will get you from A to B. Imagination will take you everywhere. \u2014 Albert Einstein", "Learn as if you will live forever, live like you will die tomorrow. \u2014 Gandhi", "Success usually comes to those who are too busy to be looking for it. \u2014 Thoreau", "The future belongs to those who believe in the beauty of their dreams. \u2014 Eleanor Roosevelt", "A person who never made a mistake never tried anything new. \u2014 Albert Einstein",
+            "Do not watch the clock; do what it does. Keep going. \u2014 Sam Levenson", "Everything you can imagine is real. \u2014 Pablo Picasso", "The best time to plant a tree was twenty years ago. The second best time is now. \u2014 Chinese proverb", "You miss one hundred percent of the shots you do not take. \u2014 Wayne Gretzky", "Small deeds done are better than great deeds planned. \u2014 Peter Marshall"
         );
     }
 }
