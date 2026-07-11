@@ -30,7 +30,7 @@ jobs:
         run: gradle -p android assembleDebug
       - uses: actions/upload-artifact@v4
         with:
-          name: 瀹㈡埛璁㈠崟绠＄悊鍣?1.0-Android-APK
+          # ASCII-only names avoid artifact upload failures on GitHub Actions.
+          name: client-order-manager-1.0-android-apk
           path: android/app/build/outputs/apk/debug/app-debug.apk
           if-no-files-found: error
-
