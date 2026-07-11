@@ -1,24 +1,17 @@
-# 客户订单管理器 1.0
+# Client Order Manager Android 1.0
 
-一个无需登录、离线可用的 Windows 客户与订单管理工具。
+Offline Android client and order manager.
 
-## 功能
+## Features
 
-- 客户、订单与收款记录管理
-- 全局搜索：客户、订单、收款、电话、备注、状态等
-- Excel 导出：客户、订单、收款分别位于三个工作表
-- JSON 数据备份与导入
-- 顶部随机轮换 100 句名人名言
-- 数据仅存储在本机用户目录
+- Local-only client, order and payment records
+- Global search and rotating quotes
+- Touch feedback and offline storage
 
-## 运行
+## Build
 
-下载 `客户订单管理器 1.0.exe` 后双击运行即可，无需安装 Python 或其他依赖。
+The Android Gradle project is in the android directory.
 
-## 数据位置
+## Download
 
-应用数据自动保存在 Windows 的 `%APPDATA%\\ClientOrderManager\\data.json`。
-
-## 说明
-
-这是一个本地单机工具。导出 Excel 或备份文件时，可自行选择保存位置。
+Download the APK from this repository's Releases page.
