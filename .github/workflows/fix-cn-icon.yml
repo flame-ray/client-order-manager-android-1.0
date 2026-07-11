@@ -1,0 +1,171 @@
+name: Fix Chinese UI and launcher icon
+
+on:
+  push:
+    paths:
+      - '.github/workflows/fix-cn-icon.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  fix-and-release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Localize UI and add adaptive icon
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+
+          root = Path("android/app/src/main")
+          java = root / "java/com/flameray/clientordermanager/MainActivity.java"
+          text = java.read_text(encoding="utf-8")
+          replacements = {
+              '"Client Order Manager 1.0"': '"客户订单管理器 1.0"',
+              '"Dashboard"': '"概览"',
+              '"Clients"': '"客户"',
+              '"Orders"': '"订单"',
+              '"Payments"': '"收款"',
+              '"Search"': '"搜索"',
+              '"Ready"': '"就绪"',
+              '"OFFLINE MODE  -  Your data stays on this device"': '"离线模式  -  数据仅保存在本机"',
+              '"Received"': '"已收款"',
+              '"Outstanding"': '"待收款"',
+              '"Outstanding Orders"': '"待收订单"',
+              '"Add order"': '"新增订单"',
+              '"No outstanding orders."': '"暂无待收订单。"',
+              '"Add client"': '"新增客户"',
+              '"No clients yet."': '"暂无客户。"',
+              '"No phone"': '"未填写联系方式"',
+              '" orders"': '" 笔订单"',
+              '"No orders yet."': '"暂无订单。"',
+              '"  |  paid "': '"  |  已收 "',
+              '"Record payment"': '"登记收款"',
+              '"No payment records yet."': '"暂无收款记录。"',
+              '"Deleted order"': '"已删除订单"',
+              '"Search all data"': '"搜索全部数据"',
+              '"Search client, order, note or phone"': '"搜索客户、订单、备注或电话"',
+              '"Type a search term."': '"请输入搜索内容。"',
+              '"Client: "': '"客户："',
+              '"Order: "': '"订单："',
+              '"Payment: "': '"收款："',
+              '"No matching records."': '"没有匹配的记录。"',
+              '"Client name"': '"客户名称"',
+              '"Phone or contact"': '"电话或联系方式"',
+              '"Notes"': '"备注"',
+              '"Edit client"': '"编辑客户"',
+              '"Cancel"': '"取消"',
+              '"Save"': '"保存"',
+              '"Delete"': '"删除"',
+              '"Client name is required"': '"请填写客户名称"',
+              '"Could not save client"': '"无法保存客户"',
+              '"Add a client first"': '"请先新增客户"',
+              '"Client"': '"客户"',
+              '"Order title"': '"订单标题"',
+              '"Amount"': '"金额"',
+              '"Already paid"': '"已收金额"',
+              '"Edit order"': '"编辑订单"',
+              '"Check title and amounts"': '"请检查订单标题和金额"',
+              '"Amount must be a number"': '"金额必须为数字"',
+              '"No unpaid orders"': '"没有待收订单"',
+              '" - due "': '" - 待收 "',
+              '"Payment amount"': '"收款金额"',
+              '"Note"': '"备注"',
+              '"Payment exceeds outstanding amount"': '"收款金额不能超过待收金额"',
+              '"Payment amount must be a number"': '"收款金额必须为数字"',
+              '"Delete this client's orders first"': '"请先删除该客户的订单"',
+              '"Unknown client"': '"未知客户"',
+          }
+          for old, new in replacements.items():
+              text = text.replace(old, new)
+          text = text.replace('name(client) + "  |  due " + money', 'name(client) + "  |  待收 " + money')
+          text = text.replace('"Search found " + matches + " results"', '"搜索到 " + matches + " 条结果"')
+          text = text.replace('"Opened " + name', '"已打开：" + name')
+          text = text.replace('"Clicked " + text', '"已点击：" + text')
+          text = text.replace('String.format(Locale.US, "$%,.2f", value)', 'String.format(Locale.CHINA, "¥%,.2f", value)')
+          quotes = '''String[] base = new String[]{
+              "千里之行，始于足下。 - 老子", "业精于勤，荒于嬉。 - 韩愈", "天行健，君子以自强不息。 - 周易", "知之者不如好之者，好之者不如乐之者。 - 孔子", "不积跬步，无以至千里。 - 荀子",
+              "纸上得来终觉浅，绝知此事要躬行。 - 陆游", "路虽远，行则将至；事虽难，做则必成。 - 荀子", "长风破浪会有时，直挂云帆济沧海。 - 李白", "海纳百川，有容乃大。 - 林则徐", "为者常成，行者常至。 - 晏子",
+              "读万卷书，行万里路。 - 刘彝", "志不立，天下无可成之事。 - 王阳明", "苟日新，日日新，又日新。 - 礼记", "凡事预则立，不预则废。 - 礼记", "工欲善其事，必先利其器。 - 论语",
+              "道阻且长，行则将至。 - 荀子", "行而不辍，未来可期。 - 荀子", "临渊羡鱼，不如退而结网。 - 淮南子", "慎终如始，则无败事。 - 老子", "知人者智，自知者明。 - 老子",
+              "天道酬勤。 - 韩愈", "脚踏实地，仰望星空。 - 黑格尔", "有志者事竟成。 - 范晔", "成功在于坚持。 - 爱迪生", "今天的行动，决定明天的收获。 - 佚名"
+          };'''
+          text = re.sub(r'String[] base = new String[]{.*?
+        };', quotes, text, flags=re.S)
+          java.write_text(text, encoding="utf-8")
+
+          manifest = root / "AndroidManifest.xml"
+          m = manifest.read_text(encoding="utf-8")
+          m = m.replace('android:icon="@drawable/ic_launcher"', 'android:icon="@mipmap/ic_launcher"
+        android:roundIcon="@mipmap/ic_launcher_round"')
+          manifest.write_text(m, encoding="utf-8")
+
+          values = root / "res/values/colors.xml"
+          c = values.read_text(encoding="utf-8").replace("</resources>", "    <color name="launcher_background">#0B6853</color>
+</resources>")
+          values.write_text(c, encoding="utf-8")
+
+          foreground = """<vector xmlns:android="http://schemas.android.com/apk/res/android" android:width="108dp" android:height="108dp" android:viewportWidth="108" android:viewportHeight="108">
+              <path android:fillColor="#F4FFF9" android:pathData="M30,21h37a7,7 0,0 1,7 7v48a7,7 0,0 1,-7 7H30a7,7 0,0 1,-7 -7V28a7,7 0,0 1,7 -7z" />
+              <path android:fillColor="#08785E" android:pathData="M32,33h28v5H32zM32,44h33v4H32zM32,53h28v4H32z" />
+              <path android:fillColor="#7BE0B8" android:pathData="M67,60m-17,0a17,17 0,1 0,34 0a17,17 0,1 0,-34 0" />
+              <path android:strokeColor="#07513F" android:strokeWidth="4" android:strokeLineCap="round" android:strokeLineJoin="round" android:fillColor="@android:color/transparent" android:pathData="M57,60l7,7l13,-15" />
+          </vector>"""
+          legacy = """<vector xmlns:android="http://schemas.android.com/apk/res/android" android:width="108dp" android:height="108dp" android:viewportWidth="108" android:viewportHeight="108">
+              <path android:fillColor="#0B6853" android:pathData="M12,12h84a12,12 0,0 1,12 12v60a12,12 0,0 1,-12 12H12A12,12 0,0 1,0 84V24A12,12 0,0 1,12 12z" />
+              <path android:fillColor="#F4FFF9" android:pathData="M30,21h37a7,7 0,0 1,7 7v48a7,7 0,0 1,-7 7H30a7,7 0,0 1,-7 -7V28a7,7 0,0 1,7 -7z" />
+              <path android:fillColor="#08785E" android:pathData="M32,33h28v5H32zM32,44h33v4H32zM32,53h28v4H32z" />
+              <path android:fillColor="#7BE0B8" android:pathData="M67,60m-17,0a17,17 0,1 0,34 0a17,17 0,1 0,-34 0" />
+              <path android:strokeColor="#07513F" android:strokeWidth="4" android:strokeLineCap="round" android:strokeLineJoin="round" android:fillColor="@android:color/transparent" android:pathData="M57,60l7,7l13,-15" />
+          </vector>"""
+          adaptive = """<adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android">
+              <background android:drawable="@color/launcher_background" />
+              <foreground android:drawable="@drawable/ic_launcher_foreground" />
+          </adaptive-icon>"""
+          (root / "res/drawable/ic_launcher_foreground.xml").write_text(foreground, encoding="utf-8")
+          for folder in ("res/mipmap-anydpi", "res/mipmap-anydpi-v26"):
+              (root / folder).mkdir(parents=True, exist_ok=True)
+          (root / "res/mipmap-anydpi/ic_launcher.xml").write_text(legacy, encoding="utf-8")
+          (root / "res/mipmap-anydpi/ic_launcher_round.xml").write_text(legacy, encoding="utf-8")
+          (root / "res/mipmap-anydpi-v26/ic_launcher.xml").write_text(adaptive, encoding="utf-8")
+          (root / "res/mipmap-anydpi-v26/ic_launcher_round.xml").write_text(adaptive, encoding="utf-8")
+          PY
+          git rm -f -- .github/workflows/fix-cn-icon.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Localize Android UI and add launcher icon"
+          git push origin HEAD:main
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: android-actions/setup-android@v3
+      - name: Install Android SDK components
+        run: |
+          yes | sdkmanager --licenses
+          sdkmanager 'platforms;android-35' 'build-tools;35.0.0'
+      - name: Install Gradle
+        run: |
+          curl -fsSL https://services.gradle.org/distributions/gradle-8.7-bin.zip -o gradle.zip
+          unzip -q gradle.zip -d "$RUNNER_TEMP"
+          echo "$RUNNER_TEMP/gradle-8.7/bin" >> "$GITHUB_PATH"
+      - name: Build APK
+        run: gradle -p android assembleDebug
+      - name: Prepare release asset
+        run: cp android/app/build/outputs/apk/debug/app-debug.apk client-order-manager-android-1.0.apk
+      - name: Publish updated release asset
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v1.0-android
+          target_commitish: main
+          name: 客户订单管理器 Android 1.0
+          body: 中文界面与自适应图标更新。
+          files: client-order-manager-android-1.0.apk
+          overwrite_files: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
