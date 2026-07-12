@@ -28,12 +28,13 @@ jobs:
       - name: Build release APK
         run: |
           gradle -p android assembleDebug
-          cp android/app/build/outputs/apk/debug/app-debug.apk client-order-manager-android-1.0.apk
-      - name: Update v1.0 Android release
+          cp android/app/build/outputs/apk/debug/app-debug.apk client-order-manager-android-1.0.1.apk
+      - name: Publish v1.0.1 Android release
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: v1.0-android
-          name: Client Order Manager Android 1.0
-          files: client-order-manager-android-1.0.apk
+          tag_name: v1.0.1-android
+          name: Client Order Manager Android 1.0.1
+          files: client-order-manager-android-1.0.1.apk
           overwrite_files: true
           fail_on_unmatched_files: true
+          generate_release_notes: true

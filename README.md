@@ -15,9 +15,9 @@
 
 ## 下载与安装
 
-从 [Release 页面](https://github.com/flame-ray/client-order-manager-android-1.0/releases/tag/v1.0-android) 下载最新版 APK：
+从 [Release 页面](https://github.com/flame-ray/client-order-manager-android-1.0/releases/tag/v1.0.1-android) 下载最新版 APK：
 
-[下载 Android APK](https://github.com/flame-ray/client-order-manager-android-1.0/releases/download/v1.0-android/client-order-manager-android-1.0.apk)
+[下载 Android APK](https://github.com/flame-ray/client-order-manager-android-1.0/releases/download/v1.0.1-android/client-order-manager-android-1.0.1.apk)
 
 安装新版本前如仍显示旧图标，请先卸载旧版应用后重新安装，以刷新桌面图标缓存。
 
