@@ -15,6 +15,8 @@ import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -101,7 +103,7 @@ public class MainActivity extends Activity {
         LinearLayout header = vertical();
         header.setPadding(dp(18), dp(14), dp(18), dp(12));
         header.setBackgroundColor(DARK);
-        TextView title = text("\u5BA2\u6237\u8BA2\u5355\u7BA1\u7406\u5668 1.0", 22, Color.WHITE, true);
+        TextView title = text("\u5BA2\u6237\u8BA2\u5355\u7BA1\u7406\u5668 1.0.1", 22, Color.WHITE, true);
         header.addView(title);
         quoteView = text("", 12, Color.rgb(190, 222, 210), false);
         quoteView.setPadding(0, dp(4), 0, 0);
@@ -274,7 +276,7 @@ public class MainActivity extends Activity {
         final EditText source = field(form, "\u5BA2\u6237\u6765\u6E90", existing == null ? "" : existing.optString("source"));
         final Spinner state = spinner(form, "\u72B6\u6001", new String[]{"\u5F85\u8DDF\u8FDB", "\u8FDB\u884C\u4E2D", "\u5DF2\u6210\u4EA4"}, existing == null ? "\u5F85\u8DDF\u8FDB" : existing.optString("status", "\u5F85\u8DDF\u8FDB"));
         final EditText note = field(form, "\u5907\u6CE8", existing == null ? "" : existing.optString("note"));
-        AlertDialog.Builder builder = new AlertDialog.Builder(this).setTitle(existing == null ? "\u65B0\u589E\u5BA2\u6237" : "\u7F16\u8F91\u5BA2\u6237").setView(form).setNegativeButton("\u53D6\u6D88", null).setPositiveButton("\u4FDD\u5B58", (d, w) -> {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this).setTitle(existing == null ? "\u65B0\u589E\u5BA2\u6237" : "\u7F16\u8F91\u5BA2\u6237").setView(dialogContent(form)).setNegativeButton("\u53D6\u6D88", null).setPositiveButton("\u4FDD\u5B58", (d, w) -> {
             if (name.getText().toString().trim().isEmpty()) { toast("\u8BF7\u586B\u5199\u5BA2\u6237\u540D\u79F0"); return; }
             try {
                 JSONObject c = existing == null ? new JSONObject() : existing;
@@ -284,7 +286,7 @@ public class MainActivity extends Activity {
             } catch (Exception e) { toast("\u4FDD\u5B58\u5931\u8D25"); }
         });
         if (existing != null) builder.setNeutralButton("\u5220\u9664", (d, w) -> confirmDeleteClient(existing));
-        builder.show();
+        showKeyboardSafeDialog(builder);
     }
 
     private void showOrderDialog(final JSONObject existing) {
@@ -300,7 +302,7 @@ public class MainActivity extends Activity {
         final EditText due = field(form, "\u622A\u6B62\u65E5\u671F\uFF08YYYY-MM-DD\uFF09", existing == null ? "" : existing.optString("due"));
         final Spinner state = spinner(form, "\u8BA2\u5355\u72B6\u6001", new String[]{"\u5F85\u8DDF\u8FDB", "\u8FDB\u884C\u4E2D", "\u5DF2\u5B8C\u6210"}, existing == null ? "\u5F85\u8DDF\u8FDB" : existing.optString("status", "\u5F85\u8DDF\u8FDB"));
         final EditText note = field(form, "\u5907\u6CE8", existing == null ? "" : existing.optString("note"));
-        AlertDialog.Builder builder = new AlertDialog.Builder(this).setTitle(existing == null ? "\u65B0\u5EFA\u8BA2\u5355" : "\u7F16\u8F91\u8BA2\u5355").setView(form).setNegativeButton("\u53D6\u6D88", null).setPositiveButton("\u4FDD\u5B58", (d, w) -> {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this).setTitle(existing == null ? "\u65B0\u5EFA\u8BA2\u5355" : "\u7F16\u8F91\u8BA2\u5355").setView(dialogContent(form)).setNegativeButton("\u53D6\u6D88", null).setPositiveButton("\u4FDD\u5B58", (d, w) -> {
             try {
                 double a = Double.parseDouble(amount.getText().toString().trim()); double p = Double.parseDouble(paid.getText().toString().trim());
                 if (title.getText().toString().trim().isEmpty() || a < 0 || p < 0 || p > a) { toast("\u8BF7\u68C0\u67E5\u9879\u76EE\u548C\u91D1\u989D"); return; }
@@ -311,7 +313,7 @@ public class MainActivity extends Activity {
             } catch (Exception e) { toast("\u91D1\u989D\u683C\u5F0F\u4E0D\u6B63\u786E"); }
         });
         if (existing != null) builder.setNeutralButton("\u5220\u9664", (d, w) -> confirmDeleteOrder(existing));
-        builder.show();
+        showKeyboardSafeDialog(builder);
     }
 
     private void showPaymentDialog() {
@@ -325,14 +327,15 @@ public class MainActivity extends Activity {
         final EditText amount = field(form, "\u6536\u6B3E\u91D1\u989D\uFF08\u5143\uFF09*", "");
         final EditText when = field(form, "\u6536\u6B3E\u65E5\u671F", today());
         final EditText note = field(form, "\u5907\u6CE8", "");
-        new AlertDialog.Builder(this).setTitle("\u8BB0\u5F55\u6536\u6B3E").setView(form).setNegativeButton("\u53D6\u6D88", null).setPositiveButton("\u4FDD\u5B58", (d, w) -> {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this).setTitle("\u8BB0\u5F55\u6536\u6B3E").setView(dialogContent(form)).setNegativeButton("\u53D6\u6D88", null).setPositiveButton("\u4FDD\u5B58", (d, w) -> {
             try {
                 JSONObject order = find(orders, ids.get(orderSpin.getSelectedItemPosition())); double a = Double.parseDouble(amount.getText().toString().trim());
                 if (a <= 0 || a > order.optDouble("amount") - order.optDouble("paid")) { toast("\u6536\u6B3E\u91D1\u989D\u4E0D\u80FD\u8D85\u8FC7\u5F85\u6536\u91D1\u989D"); return; }
                 JSONObject p = new JSONObject(); p.put("id", UUID.randomUUID().toString()); p.put("orderId", order.optString("id")); p.put("amount", a); p.put("date", when.getText().toString().trim()); p.put("note", note.getText().toString().trim()); payments.put(p); order.put("paid", order.optDouble("paid") + a);
                 save(); status("\u6536\u6B3E\u8BB0\u5F55\u5DF2\u4FDD\u5B58"); showPage("\u6536\u6B3E");
             } catch (Exception e) { toast("\u91D1\u989D\u683C\u5F0F\u4E0D\u6B63\u786E"); }
-        }).show();
+        });
+        showKeyboardSafeDialog(builder);
     }
 
     private void confirmDeleteClient(final JSONObject client) {
@@ -457,6 +460,31 @@ public class MainActivity extends Activity {
         TextView row = text(title + "\n" + detail, 14, Color.rgb(34,62,54), false); row.setLineSpacing(dp(2), 1f); row.setPadding(dp(12), dp(10), dp(12), dp(10)); row.setBackground(round(Color.rgb(246,250,248), dp(10))); row.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View v) { v.setAlpha(0.6f); v.postDelayed(() -> v.setAlpha(1f), 120); click.run(); } }); container.addView(row, fullMargins(0,0,0,7));
     }
     private LinearLayout dialogForm() { LinearLayout form = vertical(); form.setPadding(dp(8), dp(4), dp(8), dp(4)); return form; }
+    private ScrollView dialogContent(final LinearLayout form) {
+        final ScrollView scroll = new ScrollView(this);
+        scroll.setFillViewport(false);
+        scroll.setClipToPadding(false);
+        scroll.setPadding(dp(2), dp(2), dp(2), dp(20));
+        scroll.addView(form, new ScrollView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        for (int i = 0; i < form.getChildCount(); i++) {
+            final View child = form.getChildAt(i);
+            if (child instanceof EditText) {
+                child.setOnFocusChangeListener((view, focused) -> {
+                    if (focused) scroll.postDelayed(() -> scroll.smoothScrollTo(0, Math.max(0, view.getBottom() - scroll.getHeight() + dp(28))), 220);
+                });
+            }
+        }
+        return scroll;
+    }
+    private AlertDialog showKeyboardSafeDialog(AlertDialog.Builder builder) {
+        final AlertDialog dialog = builder.create();
+        dialog.setOnShowListener(ignored -> {
+            Window window = dialog.getWindow();
+            if (window != null) window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE | WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+        });
+        dialog.show();
+        return dialog;
+    }
     private EditText edit(String hint, String value) { EditText input = new EditText(this); input.setText(value); input.setHint(hint); input.setTextSize(15); input.setSingleLine(true); return input; }
     private EditText field(LinearLayout form, String label, String value) { form.addView(text(label, 12, MUTED, true), fullMargins(0,6,0,0)); EditText input = edit(label, value); form.addView(input, fullMargins(0,0,0,5)); return input; }
     private Spinner spinner(LinearLayout form, String label, String[] options, String selected) { form.addView(text(label, 12, MUTED, true), fullMargins(0,6,0,0)); Spinner spin = new Spinner(this); ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, options); spin.setAdapter(adapter); for (int i=0;i<options.length;i++) if (options[i].equals(selected)) spin.setSelection(i); form.addView(spin, fullMargins(0,0,0,5)); return spin; }
